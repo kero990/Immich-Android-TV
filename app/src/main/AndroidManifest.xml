@@ -1,4 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+JSON在线解析
+JSON 相关
+解码 / 加密
+压缩 / 格式化
+文档
+前端
+转换
+二维码相关
+站长工具
+房贷工具
+生活工具
+其他工具
+JS/HTML格式化、压缩
+JS格式化、压缩
+CSS格式化、压缩
+XML格式化、压缩
+SQL格式化、压缩
+JS代码混淆
+JS混淆加密、压缩
+格式化XML,XML格式化,XML压缩,XML美化，本工具针对 XML 代码，格式化操作。全新版本，支持代码高亮
+
+在使用的过程中，发现有BUG，功能不完善，用户体验提升等意见，请点击右上方的留言交流即可，谢谢你的支持。如需要JSON和XML互转==> XML && JSON 互转
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2020 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,30 +147,24 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Access internet-based media -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Donation -->
     <uses-permission android:name="com.android.vending.BILLING" />
-
     <!-- For writing to home screen channels -->
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
-
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
-
     <!-- Touch screen is not required -->
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
-
     <!-- This is an Android TV app only (not intended for mobile) -->
     <uses-feature
         android:name="android.software.leanback"
         android:required="true" />
-
     <application
         android:name="nl.giejay.android.tv.immich.ImmichApplication"
         android:allowBackup="true"
@@ -49,53 +177,50 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
-            android:name="nl.giejay.android.tv.immich.screensaver.ScreenSaverService"
-            android:exported="true"
-            android:label="Immich"
-            android:permission="android.permission.BIND_DREAM_SERVICE">
+    android:name="nl.giejay.android.tv.immich.screensaver.ScreenSaverService"
+    android:exported="true"
+    android:label="Immich"
+    android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.service.dreams.DreamService" />
             </intent-filter>
-
-            <!-- Point to additional information for this dream (optional) -->
             <meta-data
-                android:name="android.service.dream"
-                android:resource="@xml/screensaver" />
+        android:name="android.service.dream"
+        android:resource="@xml/screensaver" />
         </service>
-
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:configChanges="keyboard|keyboardHidden|navigation">
-
-            <!-- Used as the main entry point from the leanback launcher -->
+    android:name=".MainActivity"
+    android:exported="true"
+    android:configChanges="keyboard|keyboardHidden|navigation"
+    android:screenOrientation="landscape">
+            <!-- 普通设备启动入口 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- TV设备启动入口 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
-
+            <!-- Cast相关配置 -->
             <intent-filter>
                 <action android:name="com.google.android.gms.cast.tv.action.LAUNCH" />
                 <action android:name="com.google.android.gms.cast.tv.action.LOAD"/>
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-
         <!-- BroadcastReceiver for setting up the home screen channel -->
-<!--        <receiver-->
-<!--            android:name="nl.giejay.android.tv.immich.homescreenchannels.HomeScreenChannelReceiver"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.media.tv.action.INITIALIZE_PROGRAMS" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
+        <!--        <receiver-->
+        <!--            android:name="nl.giejay.android.tv.immich.homescreenchannels.HomeScreenChannelReceiver"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.media.tv.action.INITIALIZE_PROGRAMS" />-->
+        <!--                <category android:name="android.intent.category.DEFAULT" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
         <!--
          ~ Options provider class for Cast Connect when CastReceiverContext
          ~ is initialised. More information can be found at -
@@ -104,7 +229,5 @@
         <meta-data
             android:name="com.google.android.gms.cast.tv.RECEIVER_OPTIONS_PROVIDER_CLASS_NAME"
             android:value="nl.giejay.android.tv.immich.castconnect.CastReceiverOptionsProvider" />
-
     </application>
-
 </manifest>
